@@ -40,6 +40,8 @@ import com.example.compose_disney_characters.ui.navigation.ScreenRoute
 import com.example.compose_disney_characters.ui.theme.Background
 import com.example.compose_disney_characters.ui.theme.Secondary
 
+private const val GREED = 2
+
 @Composable
 fun HomeDestination(
     navHostController: NavHostController,
@@ -67,7 +69,7 @@ fun HomeScreen(
                     .fillMaxSize()
                     .background(Background)
             ) {
-                LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+                LazyVerticalGrid(columns = GridCells.Fixed(GREED)) {
                     items(
                         items = state?.disneyCharactersList ?: arrayListOf()
                     ) { item ->

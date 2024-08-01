@@ -9,6 +9,8 @@ import androidx.navigation.navArgument
 import com.example.compose_disney_characters.ui.screens.details.DetailsDestination
 import com.example.compose_disney_characters.ui.screens.homeScreen.HomeDestination
 
+private const val ID = "id"
+
 @Composable
 fun AppGraph(
     navController: NavHostController
@@ -19,9 +21,9 @@ fun AppGraph(
         }
         composable(
             ScreenRoute.Details.route,
-            arguments = listOf(navArgument("id") { type = NavType.IntType })
+            arguments = listOf(navArgument(ID) { type = NavType.IntType })
         ) { backStack ->
-            backStack.arguments?.getInt("id")?.let { id ->
+            backStack.arguments?.getInt(ID)?.let { id ->
                 DetailsDestination(id, navController)
             }
         }
