@@ -14,7 +14,7 @@ fun ListCharactersEntity.toListCharacterModel(): List<CharacterItemModel> {
     for (item in this.data) {
         characterList.add(
             CharacterItemModel(
-                id = item._id,
+                id = item.id,
                 name = item.name,
                 imageUrl = item.imageUrl
             )

@@ -4,5 +4,6 @@ import com.example.compose_disney_characters.models.CharacterItemModel
 
 data class HomeState(
     val isLoading: Boolean = false,
-    val disneyCharactersList: List<CharacterItemModel> = arrayListOf()
+    val disneyCharactersList: List<CharacterItemModel> = arrayListOf(),
+    val error: String? = null
 )

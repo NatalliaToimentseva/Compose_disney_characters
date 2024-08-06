@@ -1,11 +1,11 @@
 package com.example.compose_disney_characters.repository
 
-import com.example.compose_disney_characters.models.CharacterItemModel
-import com.example.compose_disney_characters.models.CharacterMainData
+import com.example.compose_disney_characters.ui.screens.details.domain.DetailsResult
+import com.example.compose_disney_characters.ui.screens.homeScreen.domain.HomeResult
 
 interface DisneyCharactersListRepository {
 
-    suspend fun getListCharacters(): List<CharacterItemModel>
+    suspend fun getListCharacters(): HomeResult
 
-    suspend fun getCharacterById(id: Int): CharacterMainData?
+    suspend fun getCharacterById(id: Int): DetailsResult
 }

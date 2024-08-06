@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.compose_disney_characters.ui.screens.homeScreen.domain.HomeAction
 import com.example.compose_disney_characters.ui.screens.homeScreen.domain.HomeState
 import com.example.compose_disney_characters.repository.DisneyCharactersListRepository
+import com.example.compose_disney_characters.ui.screens.homeScreen.domain.HomeResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,14 +22,33 @@ class HomeViewModel @Inject constructor(
     fun processAction(action: HomeAction) {
         when (action) {
             is HomeAction.Init -> loadListData()
+            HomeAction.ClearError -> clearError()
         }
     }
 
     private fun loadListData() {
         viewModelScope.launch(Dispatchers.IO) {
             state.postValue(state.value?.copy(isLoading = true))
-            val result = repository.getListCharacters()
-            state.postValue(state.value?.copy(isLoading = false, disneyCharactersList = result))
+            when (val result = repository.getListCharacters()) {
+                is HomeResult.Success -> state.postValue(
+                    state.value?.copy(
+                        isLoading = false,
+                        disneyCharactersList = result.data,
+                        error = null
+                    )
+                )
+
+                is HomeResult.Error -> state.postValue(
+                    state.value?.copy(
+                        isLoading = false,
+                        error = result.throwable.message
+                    )
+                )
+            }
         }
+    }
+
+    private fun clearError() {
+        state.value?.copy(error = null)
     }
 }

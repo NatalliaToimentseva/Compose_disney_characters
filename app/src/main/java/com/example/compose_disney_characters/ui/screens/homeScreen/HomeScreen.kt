@@ -18,10 +18,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,8 +41,10 @@ import com.example.compose_disney_characters.ui.theme.Compose_disney_charactersT
 import com.example.compose_disney_characters.R
 import com.example.compose_disney_characters.models.CharacterItemModel
 import com.example.compose_disney_characters.ui.navigation.ScreenRoute
+import com.example.compose_disney_characters.ui.screens.details.domain.DetailsAction
 import com.example.compose_disney_characters.ui.theme.Background
 import com.example.compose_disney_characters.ui.theme.Secondary
+import com.example.compose_disney_characters.utils.toast
 
 private const val GREED = 2
 
@@ -47,10 +53,14 @@ fun HomeDestination(
     navHostController: NavHostController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.observeAsState()
-    HomeScreen(state = state.value, viewModel::processAction) { id ->
-        navHostController.navigate(ScreenRoute.Details.selectRoute(id))
+    val state by viewModel.state.observeAsState()
+    val processAction = remember { viewModel::processAction }
+    val onClick: (id: Int) -> Unit = remember {
+        { id ->
+            navHostController.navigate(ScreenRoute.Details.selectRoute(id))
+        }
     }
+    HomeScreen(state = state, processAction, onClick)
 }
 
 @Composable
@@ -59,7 +69,9 @@ fun HomeScreen(
     processAction: (action: HomeAction) -> Unit,
     onClick: (id: Int) -> Unit
 ) {
-    processAction(HomeAction.Init)
+    LaunchedEffect(Unit) {
+        processAction(HomeAction.Init)
+    }
 
     Scaffold(
         content = { paddingValues ->
@@ -114,6 +126,10 @@ fun HomeScreen(
                         color = MaterialTheme.colorScheme.secondary,
                         trackColor = MaterialTheme.colorScheme.surfaceVariant
                     )
+                }
+                if (state?.error != null) {
+                    LocalContext.current.toast(state.error)
+                    processAction(HomeAction.ClearError)
                 }
             }
         }

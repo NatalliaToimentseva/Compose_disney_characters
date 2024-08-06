@@ -1,9 +1,9 @@
 package com.example.compose_disney_characters.repository.repositoryImpl
 
 import com.example.compose_disney_characters.dataSources.DisneyApi
-import com.example.compose_disney_characters.models.CharacterItemModel
-import com.example.compose_disney_characters.models.CharacterMainData
 import com.example.compose_disney_characters.repository.DisneyCharactersListRepository
+import com.example.compose_disney_characters.ui.screens.details.domain.DetailsResult
+import com.example.compose_disney_characters.ui.screens.homeScreen.domain.HomeResult
 import com.example.compose_disney_characters.utils.toCharacterMainData
 import com.example.compose_disney_characters.utils.toListCharacterModel
 import javax.inject.Inject
@@ -12,21 +12,21 @@ class DisneyCharactersListRetrofitRepository @Inject constructor(
     private val api: DisneyApi
 ) : DisneyCharactersListRepository {
 
-    override suspend fun getListCharacters(): List<CharacterItemModel> {
+    override suspend fun getListCharacters(): HomeResult {
         val response = api.getAllCharacters()
-        var listCharacters: List<CharacterItemModel>? = null
-        if (response.isSuccessful) {
-            listCharacters = response.body()?.toListCharacterModel()
+        return if (response.isSuccessful) {
+            HomeResult.Success(response.body()?.toListCharacterModel() ?: arrayListOf())
+        } else {
+            HomeResult.Error(Throwable(response.message()))
         }
-        return listCharacters ?: arrayListOf()
     }
 
-    override suspend fun getCharacterById(id: Int): CharacterMainData? {
+    override suspend fun getCharacterById(id: Int): DetailsResult {
         val response = api.getCharacter(id)
-        var character: CharacterMainData? = null
-        if (response.isSuccessful) {
-            character = response.body()?.toCharacterMainData()
+        return if (response.isSuccessful) {
+            DetailsResult.Success(response.body()?.toCharacterMainData())
+        } else {
+            DetailsResult.Error(Throwable(response.message()))
         }
-        return character
     }
 }

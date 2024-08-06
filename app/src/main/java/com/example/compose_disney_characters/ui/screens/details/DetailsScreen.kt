@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
@@ -23,11 +24,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -46,6 +50,7 @@ import com.example.compose_disney_characters.ui.screens.details.domain.DetailsSt
 import com.example.compose_disney_characters.ui.theme.Background
 import com.example.compose_disney_characters.ui.theme.Compose_disney_charactersTheme
 import com.example.compose_disney_characters.ui.theme.Secondary
+import com.example.compose_disney_characters.utils.toast
 
 @Composable
 fun DetailsDestination(
@@ -53,12 +58,13 @@ fun DetailsDestination(
     navHostController: NavHostController,
     viewModel: DetailsViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.observeAsState()
-    DetailsScreen(id = id, state = state.value, viewModel::processAction) {
+    val state by viewModel.state.observeAsState()
+    DetailsScreen(id = id, state = state, viewModel::processAction) {
         navHostController.popBackStack(route = ScreenRoute.Home.route, inclusive = false)
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun DetailsScreen(
     id: Int,
@@ -66,7 +72,9 @@ fun DetailsScreen(
     processAction: (action: DetailsAction) -> Unit,
     goBack: () -> Unit
 ) {
-    processAction(DetailsAction.Init(id))
+    LaunchedEffect(Unit) {
+        processAction(DetailsAction.Init(id))
+    }
 
     Scaffold(
         content = { padding ->
@@ -130,10 +138,8 @@ fun DetailsScreen(
                                     modifier = Modifier
                                         .padding(5.dp)
                                 )
-                                LazyRow(contentPadding = PaddingValues(5.dp)) {
-                                    items(
-                                        items = itemField.movies
-                                    ) { itemsValue ->
+                                FlowRow(modifier = Modifier.padding(5.dp)) {
+                                    itemField.movies.forEach { itemsValue ->
                                         Box(
                                             modifier = Modifier
                                                 .wrapContentSize()
@@ -167,6 +173,11 @@ fun DetailsScreen(
                         color = MaterialTheme.colorScheme.secondary,
                         trackColor = MaterialTheme.colorScheme.surfaceVariant
                     )
+                }
+
+                if (state?.error != null) {
+                    LocalContext.current.toast(state.error)
+                    processAction(DetailsAction.ClearError)
                 }
             }
         }
