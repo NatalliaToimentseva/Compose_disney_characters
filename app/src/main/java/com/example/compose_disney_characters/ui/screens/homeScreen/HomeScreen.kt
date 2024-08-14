@@ -18,10 +18,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,7 +39,6 @@ import com.example.compose_disney_characters.ui.theme.Compose_disney_charactersT
 import com.example.compose_disney_characters.R
 import com.example.compose_disney_characters.models.CharacterItemModel
 import com.example.compose_disney_characters.ui.navigation.ScreenRoute
-import com.example.compose_disney_characters.ui.screens.details.domain.DetailsAction
 import com.example.compose_disney_characters.ui.theme.Background
 import com.example.compose_disney_characters.ui.theme.Secondary
 import com.example.compose_disney_characters.utils.toast
@@ -53,14 +50,10 @@ fun HomeDestination(
     navHostController: NavHostController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val state by viewModel.state.observeAsState()
-    val processAction = remember { viewModel::processAction }
-    val onClick: (id: Int) -> Unit = remember {
-        { id ->
-            navHostController.navigate(ScreenRoute.Details.selectRoute(id))
-        }
+    val state by viewModel.state.collectAsState()
+    HomeScreen(state = state, viewModel::processAction) { id ->
+        navHostController.navigate(ScreenRoute.Details.selectRoute(id))
     }
-    HomeScreen(state = state, processAction, onClick)
 }
 
 @Composable
@@ -69,10 +62,6 @@ fun HomeScreen(
     processAction: (action: HomeAction) -> Unit,
     onClick: (id: Int) -> Unit
 ) {
-    LaunchedEffect(Unit) {
-        processAction(HomeAction.Init)
-    }
-
     Scaffold(
         content = { paddingValues ->
             Box(

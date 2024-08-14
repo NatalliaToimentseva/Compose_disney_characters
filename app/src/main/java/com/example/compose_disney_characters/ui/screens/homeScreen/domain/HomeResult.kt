@@ -7,4 +7,6 @@ sealed class HomeResult {
     data class Success(val data: List<CharacterItemModel>) : HomeResult()
 
     data class Error(val throwable: Throwable) : HomeResult()
+
+    data object Loading : HomeResult()
 }
