@@ -1,7 +1,6 @@
-package com.example.compose_disney_characters.ui.screens.details
+package com.example.compose_disney_characters.ui.screens.details.domain
 
 import com.example.compose_disney_characters.repository.DisneyCharactersListRepository
-import com.example.compose_disney_characters.ui.screens.details.domain.DetailsResult
 import com.example.compose_disney_characters.utils.toCharacterMainData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -12,7 +11,7 @@ class GetCharacterByIdUseCase @Inject constructor(
     private val repository: DisneyCharactersListRepository
 ) {
 
-    suspend fun loadCharacterById(id: Int): Flow<DetailsResult> {
+    fun loadCharacterById(id: Int): Flow<DetailsResult> {
         return flow {
             emit(DetailsResult.Loading)
             val response = repository.getCharacterById(id)

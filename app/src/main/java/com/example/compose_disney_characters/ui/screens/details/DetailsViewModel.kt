@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.compose_disney_characters.ui.screens.details.domain.DetailsAction
 import com.example.compose_disney_characters.ui.screens.details.domain.DetailsResult
 import com.example.compose_disney_characters.ui.screens.details.domain.DetailsState
+import com.example.compose_disney_characters.ui.screens.details.domain.GetCharacterByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +22,7 @@ class DetailsViewModel @Inject constructor(
     fun processAction(action: DetailsAction) {
         when (action) {
             is DetailsAction.Init -> getCharacter(action.id)
-            DetailsAction.ClearError -> clearError()
+            is DetailsAction.ClearError -> clearError()
         }
     }
 

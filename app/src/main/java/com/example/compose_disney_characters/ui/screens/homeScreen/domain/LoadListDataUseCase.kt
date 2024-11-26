@@ -1,7 +1,6 @@
-package com.example.compose_disney_characters.ui.screens.homeScreen
+package com.example.compose_disney_characters.ui.screens.homeScreen.domain
 
 import com.example.compose_disney_characters.repository.DisneyCharactersListRepository
-import com.example.compose_disney_characters.ui.screens.homeScreen.domain.HomeResult
 import com.example.compose_disney_characters.utils.toListCharacterModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -12,7 +11,7 @@ class LoadListDataUseCase @Inject constructor(
     private val repository: DisneyCharactersListRepository
 ) {
 
-    suspend fun loadAllCharacters(): Flow<HomeResult> {
+    fun loadAllCharacters(): Flow<HomeResult> {
         return flow {
             emit(HomeResult.Loading)
             val response = repository.getListCharacters()

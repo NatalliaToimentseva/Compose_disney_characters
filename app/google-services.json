@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "985805603729",
+    "project_id": "compose-disney-characters",
+    "storage_bucket": "compose-disney-characters.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985805603729:android:7511eeb8900a9880d49030",
+        "android_client_info": {
+          "package_name": "com.example.compose_disney_characters"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBm_0-GsZ-JkmNWHWcpzUduPlvFW53R_4k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

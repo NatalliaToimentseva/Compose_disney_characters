@@ -33,13 +33,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.example.compose_disney_characters.ui.screens.homeScreen.domain.HomeAction
-import com.example.compose_disney_characters.ui.screens.homeScreen.domain.HomeState
-import com.example.compose_disney_characters.ui.theme.Compose_disney_charactersTheme
 import com.example.compose_disney_characters.R
 import com.example.compose_disney_characters.models.CharacterItemModel
 import com.example.compose_disney_characters.ui.navigation.ScreenRoute
+import com.example.compose_disney_characters.ui.screens.homeScreen.domain.HomeAction
+import com.example.compose_disney_characters.ui.screens.homeScreen.domain.HomeState
 import com.example.compose_disney_characters.ui.theme.Background
+import com.example.compose_disney_characters.ui.theme.Compose_disney_charactersTheme
 import com.example.compose_disney_characters.ui.theme.Secondary
 import com.example.compose_disney_characters.utils.toast
 
