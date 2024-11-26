@@ -8,6 +8,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.compose_disney_characters.R
 
+
 val acmeFont = FontFamily(
     Font(R.font.acme, FontWeight.Black)
 )
