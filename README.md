@@ -1,4 +1,4 @@
-# Disney Characters (XML version)
+# Disney Characters (Compose version)
 
 ![DchCompose](https://github.com/user-attachments/assets/642c7321-b272-427f-af0b-d1d592c4a073)
 
