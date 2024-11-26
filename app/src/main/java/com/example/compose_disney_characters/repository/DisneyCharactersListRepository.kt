@@ -1,11 +1,12 @@
 package com.example.compose_disney_characters.repository
 
-import com.example.compose_disney_characters.ui.screens.details.domain.DetailsResult
-import com.example.compose_disney_characters.ui.screens.homeScreen.domain.HomeResult
+import com.example.compose_disney_characters.dataSources.entities.CharacterEntity
+import com.example.compose_disney_characters.dataSources.entities.ListCharactersEntity
+import retrofit2.Response
 
 interface DisneyCharactersListRepository {
 
-    suspend fun getListCharacters(): HomeResult
+    suspend fun getListCharacters(): Response<ListCharactersEntity>
 
-    suspend fun getCharacterById(id: Int): DetailsResult
+    suspend fun getCharacterById(id: Int): Response<CharacterEntity>
 }

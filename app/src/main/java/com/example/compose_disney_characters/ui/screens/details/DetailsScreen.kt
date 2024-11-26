@@ -25,8 +25,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -58,7 +58,7 @@ fun DetailsDestination(
     navHostController: NavHostController,
     viewModel: DetailsViewModel = hiltViewModel()
 ) {
-    val state by viewModel.state.observeAsState()
+    val state by viewModel.state.collectAsState()
     DetailsScreen(id = id, state = state, viewModel::processAction) {
         navHostController.popBackStack(route = ScreenRoute.Home.route, inclusive = false)
     }
